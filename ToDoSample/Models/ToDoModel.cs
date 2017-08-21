@@ -12,7 +12,9 @@ namespace ToDoSample.Models
         [Required]
         public Guid Id { get; set; }
         [Required]
-        public bool IsCompleted { get; set; }
+        public bool IsCompleted { get; set; }       
+        [Required]
+        public string ToDo { get; set; }
         [Required]
         public DateTime CreateTime { get; set; }
     }

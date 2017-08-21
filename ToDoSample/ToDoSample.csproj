@@ -196,6 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ToDoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -206,6 +207,10 @@
     <Compile Include="Migrations\201708211555055_AddToDoTable.cs" />
     <Compile Include="Migrations\201708211555055_AddToDoTable.Designer.cs">
       <DependentUpon>201708211555055_AddToDoTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708211608277_UpdateTable.cs" />
+    <Compile Include="Migrations\201708211608277_UpdateTable.Designer.cs">
+      <DependentUpon>201708211608277_UpdateTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -260,6 +265,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\ToDo\Create.cshtml" />
+    <Content Include="Views\ToDo\Delete.cshtml" />
+    <Content Include="Views\ToDo\Details.cshtml" />
+    <Content Include="Views\ToDo\Edit.cshtml" />
+    <Content Include="Views\ToDo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -276,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708211555055_AddToDoTable.resx">
       <DependentUpon>201708211555055_AddToDoTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708211608277_UpdateTable.resx">
+      <DependentUpon>201708211608277_UpdateTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
