@@ -17,6 +17,10 @@ namespace ToDoSample.Controllers
         // GET: ToDoModels
         public ActionResult Index()
         {
+            return View();
+        }
+        public ActionResult List()
+        {
             return View(db.ToDoModels.OrderBy(x=>x.IsCompleted).ThenBy(x=>x.CreateTime).ToList());
         }
 
@@ -60,6 +64,26 @@ namespace ToDoSample.Controllers
 
             return View(toDoModel);
         }
+        [HttpPost]
+        public ActionResult CreateToDo([Bind(Include = "ToDo")] ToDoModel toDoModel)
+        {
+            try
+            {
+                toDoModel.Id = Guid.NewGuid();
+                toDoModel.CreateTime = DateTime.Now;
+                toDoModel.IsCompleted = false;
+                db.ToDoModels.Add(toDoModel);
+                db.SaveChanges();
+                return Json(new AjaxResult() { status = "success", message = "" });
+            }
+            catch (Exception)
+            {
+                return Json(new AjaxResult() { status = "error", message = "" });
+                
+            }
+
+        }
+
 
         // GET: ToDoModels/Edit/5
         public ActionResult Edit(Guid? id)
@@ -93,17 +117,21 @@ namespace ToDoSample.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult IsCompleted([Bind(Include = "IsCompleted")] ToDoModel toDoModel)
+        public ActionResult IsCompleted([Bind(Include = "IsCompleted,Id")] ToDoModel toDoModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                toDoModel.IsCompleted = true;
-                db.Entry(toDoModel).State = EntityState.Modified;
+                 ToDoModel _toDoModel = db.ToDoModels.Find(toDoModel.Id);
+                _toDoModel.IsCompleted = toDoModel.IsCompleted;
+                db.Entry(_toDoModel).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Json(new AjaxResult() { status = "success", message = "" });
             }
-            return View(toDoModel);
+            catch (Exception)
+            {
+                return Json(new AjaxResult() { status = "error", message = "" });
+
+            }
         }
 
         // GET: ToDoModels/Delete/5
@@ -131,6 +159,25 @@ namespace ToDoSample.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public ActionResult DeleteToDo(Guid id)
+        {
+            
+            try
+            {
+                ToDoModel toDoModel = db.ToDoModels.Find(id);
+                db.ToDoModels.Remove(toDoModel);
+                db.SaveChanges();
+                return Json(new AjaxResult() { status = "success", message = "" });
+            }
+            catch (Exception)
+            {
+                return Json(new AjaxResult() { status = "error", message = "" });
+
+            }
+        }
+            
 
         protected override void Dispose(bool disposing)
         {
