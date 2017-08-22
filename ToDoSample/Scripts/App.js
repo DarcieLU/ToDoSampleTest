@@ -3,6 +3,7 @@
     self.createnRout = "/ToDo/CreateToDo";
     self.deleteRout = "/ToDo/DeleteToDo";
     self.changeStateRout = "/ToDo/IsCompleted";
+    self.deleteAllRout = "/ToDo/DeleteAllCompleteToDo";
     
     self.SuccessRout = "/ToDo/List";
 
@@ -37,6 +38,18 @@
 
        })
     }
+    self.DeleteAll = function () {
+        $.post(self.deleteAllRout)
+       .done(function (data) {
+           if (data.status == "success") {
+               $.get(self.SuccessRout, function (data) {
+                   $('#ToDoResult').html(data);
+                   $('#InputToDo').val('');
+               });
+           }
+
+       })
+    }
     self.ChangeStatus = function (Id, statusString) {
          var AddProfiles = {
             Id: Id,
@@ -52,6 +65,13 @@
            }
 
        })
+    }
+    self.GetList=function(status)
+    {
+        $.get(self.SuccessRout+"?status="+status, function (data) {
+            $('#ToDoResult').html(data);
+            $('#InputToDo').val('');
+        });
     }
 }
 

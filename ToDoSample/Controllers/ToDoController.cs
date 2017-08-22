@@ -19,9 +19,20 @@ namespace ToDoSample.Controllers
         {
             return View();
         }
-        public ActionResult List()
+        public ActionResult List(int status=0)
         {
-            return View(db.ToDoModels.OrderBy(x=>x.IsCompleted).ThenBy(x=>x.CreateTime).ToList());
+            //0=all,1=active,2=completed
+            ViewBag.status = status;
+            IEnumerable<ToDoModel> _result = db.ToDoModels;
+            if (status==1)
+            {
+                _result= _result.Where(x => x.IsCompleted == false);
+            }
+            else  if (status==2)
+            {
+                _result = _result.Where(x => x.IsCompleted);
+            }
+            return View(_result.OrderBy(x=>x.IsCompleted).ThenBy(x=>x.CreateTime).ToList());
         }
 
         // GET: ToDoModels/Details/5
@@ -177,7 +188,25 @@ namespace ToDoSample.Controllers
 
             }
         }
-            
+        [HttpPost]
+        public ActionResult DeleteAllCompleteToDo()
+        {
+            try
+            {
+                foreach (var item in db.ToDoModels.Where(x=>x.IsCompleted).ToList())
+                {
+                    db.ToDoModels.Remove(item);
+                }
+                db.SaveChanges();
+                return Json(new AjaxResult() { status = "success", message = "" });
+            }
+            catch (Exception)
+            {
+                return Json(new AjaxResult() { status = "error", message = "" });
+
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {

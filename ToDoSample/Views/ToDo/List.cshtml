@@ -31,15 +31,18 @@
     <!-- Remove this if you don't implement routing -->
     <ul class="filters">
         <li>
-            <a class="selected" href="#/">All</a>
+            <a @(ViewBag.status!=null && ViewBag.status==0?"class=selected":"")  onclick="ToDoFormoperator.GetList('0')">All</a>
         </li>
         <li>
-            <a href="#/active">Active</a>
+            <a @(ViewBag.status!=null && ViewBag.status==1?"class=selected":"") onclick="ToDoFormoperator.GetList('1')">Active</a>
         </li>
         <li>
-            <a href="#/completed">Completed</a>
+            <a @(ViewBag.status!=null && ViewBag.status==2?"class=selected":"") onclick="ToDoFormoperator.GetList('2')">Completed</a>
         </li>
     </ul>
     <!-- Hidden if no completed items are left ↓ -->
-    <button class="clear-completed">Clear completed</button>
+    @if (Model.Where(x => x.IsCompleted).Count() > 0)
+    {
+    <button type="button" class="clear-completed" onclick="ToDoFormoperator.DeleteAll()">Clear completed</button>
+    }
 </footer>
